@@ -1,11 +1,17 @@
 package io.github.kkercz.stravavify;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import io.github.kkercz.stravavify.model.Song;
+
+import static java.util.stream.Collectors.joining;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.print("Hello world!");
+        try {
+            SpotifyConnector spotifyConnector = new SpotifyConnector();
+
+            System.out.print(spotifyConnector.getSongs().stream().map(Song::toString).collect(joining("\n")));
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 }
