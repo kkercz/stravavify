@@ -1,5 +1,10 @@
 plugins {
     id("java")
+    application
+}
+
+application {
+    mainClass.set("io.github.kkercz.stravavify.Main")
 }
 
 group = "io.github.kkercz"
