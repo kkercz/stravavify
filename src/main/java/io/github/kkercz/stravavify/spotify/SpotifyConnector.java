@@ -1,4 +1,4 @@
-package io.github.kkercz.stravavify;
+package io.github.kkercz.stravavify.spotify;
 
 import io.github.kkercz.stravavify.model.Song;
 import org.apache.hc.core5.http.ParseException;
@@ -16,20 +16,21 @@ import java.util.stream.Stream;
 
 public class SpotifyConnector {
 
+    private final SpotifyApi spotifyApi = SpotifyApi.builder()
+            .setClientId(System.getenv("SPOTIFY_CLIENT_ID"))
+            .setClientSecret(System.getenv("SPOTIFY_CLIENT_SECRET"))
+            .setRefreshToken(System.getenv("SPOTIFY_REFRESH_TOKEN"))
+            .build();
+
+    {
+        try {
+            initAccessToken();
+        } catch (Exception ex) {
+            throw new RuntimeException();
+        }
+    }
+
     public List<Song> getSongs() throws IOException, ParseException, SpotifyWebApiException {
-
-        SpotifyApi spotifyApi = SpotifyApi.builder()
-                .setClientId(System.getenv("SPOTIFY_CLIENT_ID"))
-                .setClientSecret(System.getenv("SPOTIFY_CLIENT_SECRET"))
-                .setRefreshToken(System.getenv("SPOTIFY_REFRESH_TOKEN"))
-                .build();
-
-        AuthorizationCodeCredentials token = spotifyApi.authorizationCodeRefresh()
-                .build()
-                .execute();
-
-        spotifyApi.setAccessToken(token.getAccessToken());
-
         PagingCursorbased<PlayHistory> playHistory = spotifyApi
                 .getCurrentUsersRecentlyPlayedTracks()
                 .build()
@@ -45,5 +46,13 @@ public class SpotifyConnector {
                 track.getName(),
                 Stream.of(track.getArtists()).map(ArtistSimplified::getName).toList(),
                 track.getAlbum().getName());
+    }
+
+    private void initAccessToken() throws IOException, SpotifyWebApiException, ParseException {
+        AuthorizationCodeCredentials token = spotifyApi.authorizationCodeRefresh()
+                .build()
+                .execute();
+
+        spotifyApi.setAccessToken(token.getAccessToken());
     }
 }

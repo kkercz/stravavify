@@ -22,6 +22,9 @@ repositories {
 
 dependencies {
     implementation("se.michaelthelin.spotify:spotify-web-api-java:9.2.0")
+
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-moshi:3.0.0")
 }
 
 tasks.test {
