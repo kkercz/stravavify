@@ -1,6 +1,6 @@
 package io.github.kkercz.stravavify.connector.spotify;
 
-import io.github.kkercz.stravavify.connector.spotify.model.Song;
+import io.github.kkercz.stravavify.model.Song;
 import io.github.kkercz.stravavify.util.DateUtils;
 import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
@@ -15,6 +15,8 @@ import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static io.github.kkercz.stravavify.model.TimeBounds.timeBounds;
 
 public class SpotifyConnector {
 
@@ -32,7 +34,7 @@ public class SpotifyConnector {
 
         return Stream.of(playHistory.getItems())
                 .map(this::toSong)
-                .sorted(Comparator.comparing(Song::playedAt))
+                .sorted(Comparator.comparing(Song::time))
                 .toList();
     }
 
@@ -44,8 +46,9 @@ public class SpotifyConnector {
                 track.getName(),
                 Stream.of(track.getArtists()).map(ArtistSimplified::getName).toList(),
                 track.getAlbum().getName(),
-                DateUtils.localDateTime(playHistory.getPlayedAt()).minus(trackDuration),
-                trackDuration
+                timeBounds(
+                        DateUtils.localDateTime(playHistory.getPlayedAt()).minus(trackDuration),
+                        trackDuration)
         );
     }
 }

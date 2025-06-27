@@ -4,7 +4,7 @@ import io.github.kkercz.stravavify.connector.strava.api.StravaApi;
 import io.github.kkercz.stravavify.connector.strava.api.model.ActivityDetailed;
 import io.github.kkercz.stravavify.connector.strava.api.model.ActivitySimple;
 import io.github.kkercz.stravavify.connector.strava.api.model.ActivityUpdate;
-import io.github.kkercz.stravavify.connector.strava.model.Activity;
+import io.github.kkercz.stravavify.model.Activity;
 import io.github.kkercz.stravavify.util.DateUtils;
 
 import java.io.IOException;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class StravaConnector {
+import static io.github.kkercz.stravavify.model.TimeBounds.timeBounds;
 
-    private static final long LAST_24_HOURS_EPOCH = Instant.now().getEpochSecond() - 60 * 60 * 24;
+public class StravaConnector {
 
     private final StravaApi stravaApi;
 
@@ -24,9 +24,11 @@ public class StravaConnector {
         this.stravaApi = stravaApi;
     }
 
-    public Optional<Activity> getLatestActivity() throws IOException {
+    public Optional<Activity> getLatestActivity(Duration from) throws IOException {
 
-        List<ActivitySimple> activities = stravaApi.getLatestActivities((int) LAST_24_HOURS_EPOCH).execute().body();
+        long afterEpoch = Instant.now().getEpochSecond() - from.toSeconds();
+
+        List<ActivitySimple> activities = stravaApi.getLatestActivities(afterEpoch).execute().body();
 
         Optional<Long> latestActivityId = Objects.requireNonNull(activities)
                 .stream()
@@ -42,8 +44,9 @@ public class StravaConnector {
 
         return Optional.of(new Activity(
                 a.id(),
-                DateUtils.localDateTime(a.start_date()),
-                Duration.ofSeconds(a.elapsed_time()),
+                timeBounds(
+                        DateUtils.localDateTime(a.start_date()),
+                        Duration.ofSeconds(a.elapsed_time())),
                 a.description())
         );
     }
@@ -51,5 +54,4 @@ public class StravaConnector {
     public void updateDescription(Long activityId, String description) throws IOException {
         stravaApi.updateActivity(String.valueOf(activityId), new ActivityUpdate(description)).execute();
     }
-
 }

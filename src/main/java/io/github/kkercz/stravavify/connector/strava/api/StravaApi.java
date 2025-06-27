@@ -20,7 +20,7 @@ public interface StravaApi {
     String STRAVA_API_BASE_URL = "https://www.strava.com/api/v3/";
 
     @GET("athlete/activities")
-    Call<List<ActivitySimple>> getLatestActivities(@Query("after") int afterEpoch);
+    Call<List<ActivitySimple>> getLatestActivities(@Query("after") long afterEpoch);
 
     @GET("activities/{id}")
     Call<ActivityDetailed> getActivity(@Path("id") String activityId);
