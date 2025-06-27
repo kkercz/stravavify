@@ -1,4 +1,4 @@
-package io.github.kkercz.stravavify.model;
+package io.github.kkercz.stravavify.connector.spotify.model;
 
 import java.util.List;
 

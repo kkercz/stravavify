@@ -1,11 +1,21 @@
-package io.github.kkercz.stravavify.strava.api;
+package io.github.kkercz.stravavify.connector.strava.api;
 
 import com.squareup.moshi.Moshi;
-import io.github.kkercz.stravavify.strava.api.model.*;
+import io.github.kkercz.stravavify.connector.strava.api.model.ActivityDetailed;
+import io.github.kkercz.stravavify.connector.strava.api.model.ActivitySimple;
+import io.github.kkercz.stravavify.connector.strava.api.model.ActivityUpdate;
+import io.github.kkercz.stravavify.connector.strava.api.model.RefreshTokenRequest;
+import io.github.kkercz.stravavify.connector.strava.api.model.TokenResponse;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
-import retrofit2.http.*;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.util.List;
 

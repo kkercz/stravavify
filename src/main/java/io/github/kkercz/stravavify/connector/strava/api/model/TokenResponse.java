@@ -1,4 +1,4 @@
-package io.github.kkercz.stravavify.strava.api.model;
+package io.github.kkercz.stravavify.connector.strava.api.model;
 
 public record TokenResponse(
         String access_token,
