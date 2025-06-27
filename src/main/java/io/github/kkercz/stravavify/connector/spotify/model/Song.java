@@ -1,11 +1,19 @@
 package io.github.kkercz.stravavify.connector.spotify.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static io.github.kkercz.stravavify.StringUtils.cleanUp;
-import static io.github.kkercz.stravavify.StringUtils.joinWithLimit;
+import static io.github.kkercz.stravavify.util.StringUtils.cleanUp;
+import static io.github.kkercz.stravavify.util.StringUtils.joinWithLimit;
 
-public record Song(String title, List<String> artists, String album) {
+public record Song(
+        String title,
+        List<String> artists,
+        String album,
+        LocalDateTime playedAt,
+        Duration duration
+) {
 
     /**
      * @return 🎵 Non-Stop 🎤 Leslie Odom Jr., Lin-Manuel Miranda, ... 💿 Hamilton

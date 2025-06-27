@@ -38,7 +38,7 @@ public class ConnectorFactory {
     }
 
     public StravaConnector stravaConnector() throws IOException {
-        StravaApi stravaApi = StravaApi.create();
+        StravaApi.Authentication stravaApi = StravaApi.Authentication.create();
         String token = stravaApi
                 .refreshToken(new RefreshTokenRequest(
                         STRAVA_CLIENT_ID.get(),
@@ -47,6 +47,6 @@ public class ConnectorFactory {
                         STRAVA_REFRESH_TOKEN.get()))
                 .execute().body().access_token();
 
-        return new StravaConnector(stravaApi, token);
+        return new StravaConnector(StravaApi.create(token));
     }
 }

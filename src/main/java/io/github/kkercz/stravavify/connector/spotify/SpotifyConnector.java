@@ -1,6 +1,7 @@
 package io.github.kkercz.stravavify.connector.spotify;
 
 import io.github.kkercz.stravavify.connector.spotify.model.Song;
+import io.github.kkercz.stravavify.util.DateUtils;
 import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -10,6 +11,8 @@ import se.michaelthelin.spotify.model_objects.specification.PlayHistory;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,21 +24,28 @@ public class SpotifyConnector {
         this.spotifyApi = spotifyApi;
     }
 
-    public List<Song> getSongs() throws IOException, ParseException, SpotifyWebApiException {
+    public List<Song> getRecentSongs() throws IOException, ParseException, SpotifyWebApiException {
         PagingCursorbased<PlayHistory> playHistory = spotifyApi
                 .getCurrentUsersRecentlyPlayedTracks()
                 .build()
                 .execute();
 
         return Stream.of(playHistory.getItems())
-                .map(ph -> toSong(ph.getTrack()))
+                .map(this::toSong)
+                .sorted(Comparator.comparing(Song::playedAt))
                 .toList();
     }
 
-    private Song toSong(Track track) {
+    private Song toSong(PlayHistory playHistory) {
+        Track track = playHistory.getTrack();
+        Duration trackDuration = Duration.ofMillis(track.getDurationMs());
+
         return new Song(
                 track.getName(),
                 Stream.of(track.getArtists()).map(ArtistSimplified::getName).toList(),
-                track.getAlbum().getName());
+                track.getAlbum().getName(),
+                DateUtils.localDateTime(playHistory.getPlayedAt()).minus(trackDuration),
+                trackDuration
+        );
     }
 }

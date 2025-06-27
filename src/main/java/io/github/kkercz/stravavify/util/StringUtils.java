@@ -1,4 +1,4 @@
-package io.github.kkercz.stravavify;
+package io.github.kkercz.stravavify.util;
 
 import java.util.List;
 
