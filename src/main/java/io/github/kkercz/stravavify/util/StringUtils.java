@@ -11,7 +11,7 @@ public class StringUtils {
     }
 
     public static String joinWithLimit(List<String> values) {
-        return joinWithLimit(values, ", ", 40);
+        return joinWithLimit(values, ", ", 20);
     }
 
     public static String joinWithLimit(List<String> values, String sep, int limit) {
