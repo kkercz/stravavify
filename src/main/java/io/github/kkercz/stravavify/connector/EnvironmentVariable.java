@@ -1,5 +1,7 @@
 package io.github.kkercz.stravavify.connector;
 
+import java.util.Optional;
+
 public enum EnvironmentVariable {
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
@@ -10,6 +12,8 @@ public enum EnvironmentVariable {
     STRAVA_REFRESH_TOKEN;
 
     public String get() {
-        return System.getenv(this.name());
+        return Optional
+                .ofNullable(System.getenv(this.name()))
+                .orElseThrow(() -> new IllegalStateException("Variable " + name() + " must be defined in the environment"));
     }
 }
