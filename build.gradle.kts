@@ -25,6 +25,7 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-moshi:3.0.0")
+    implementation("org.slf4j:slf4j-nop:2.0.17")
 }
 
 tasks.test {

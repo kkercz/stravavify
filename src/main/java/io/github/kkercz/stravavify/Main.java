@@ -3,22 +3,16 @@ package io.github.kkercz.stravavify;
 import io.github.kkercz.stravavify.connector.ConnectorFactory;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        System.out.println("\n---------- Stravavify: START ----------\n");
 
-        System.out.println("\n\n---------- Stravavify: START ----------\n\n\n");
+        ConnectorFactory connectorFactory = new ConnectorFactory();
+        Stravavify stravavify = new Stravavify(
+                connectorFactory.spotifyConnector(),
+                connectorFactory.stravaConnector());
 
-        try {
-            ConnectorFactory connectorFactory = new ConnectorFactory();
-            Stravavify stravavify = new Stravavify(
-                    connectorFactory.spotifyConnector(),
-                    connectorFactory.stravaConnector());
+        stravavify.updateDescriptionWithSongs();
 
-
-            stravavify.updateDescriptionWithSongs();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
-
-        System.out.println("\n\n\n----------- Stravavify: END -----------\n");
+        System.out.println("\n----------- Stravavify: END -----------\n");
     }
 }
