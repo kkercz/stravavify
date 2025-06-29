@@ -1,6 +1,6 @@
 package io.github.kkercz.stravavify;
 
-import io.github.kkercz.stravavify.connector.spotify.SpotifyConnector;
+import io.github.kkercz.stravavify.connector.MusicPlayer;
 import io.github.kkercz.stravavify.connector.strava.StravaConnector;
 import io.github.kkercz.stravavify.model.Activity;
 import io.github.kkercz.stravavify.model.Song;
@@ -15,23 +15,23 @@ import static io.github.kkercz.stravavify.util.StringUtils.cleanUp;
 import static io.github.kkercz.stravavify.util.StringUtils.joinWithLimit;
 
 public class Stravavify {
-    private final SpotifyConnector spotifyConnector;
+    private final MusicPlayer musicPlayer;
     private final StravaConnector stravaConnector;
 
-    public Stravavify(SpotifyConnector spotifyConnector, StravaConnector stravaConnector) {
-        this.spotifyConnector = spotifyConnector;
+    public Stravavify(MusicPlayer musicPlayer, StravaConnector stravaConnector) {
+        this.musicPlayer = musicPlayer;
         this.stravaConnector = stravaConnector;
     }
 
     public void updateDescriptionWithSongs() throws Exception {
 
-        List<Song> recentSongs = spotifyConnector.getRecentSongs();
+        List<Song> recentSongs = musicPlayer.getRecentSongs();
         Optional<Activity> latestActivityWithEmptyDescription = stravaConnector
                 .getLatestActivity(Duration.ofHours(24))
                 .filter(a -> a.description() == null || a.description().isBlank());
 
         if (latestActivityWithEmptyDescription.isEmpty()) {
-            System.out.println("No activity with empty description in the last 24 hours found");
+            System.out.println("No Strava activity with empty description in the last 24 hours found");
             return;
         }
 

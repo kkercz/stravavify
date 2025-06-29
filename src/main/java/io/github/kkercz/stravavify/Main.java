@@ -8,7 +8,7 @@ public class Main {
 
         ConnectorFactory connectorFactory = new ConnectorFactory();
         Stravavify stravavify = new Stravavify(
-                connectorFactory.spotifyConnector(),
+                connectorFactory.musicPlayer(),
                 connectorFactory.stravaConnector());
 
         stravavify.updateDescriptionWithSongs();

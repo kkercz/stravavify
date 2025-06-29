@@ -1,16 +1,14 @@
 package io.github.kkercz.stravavify.connector.spotify;
 
+import io.github.kkercz.stravavify.connector.MusicPlayer;
 import io.github.kkercz.stravavify.model.Song;
 import io.github.kkercz.stravavify.util.DateUtils;
-import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
-import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.PagingCursorbased;
 import se.michaelthelin.spotify.model_objects.specification.PlayHistory;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.stream.Stream;
 
 import static io.github.kkercz.stravavify.model.TimeBounds.timeBounds;
 
-public class SpotifyConnector {
+public class SpotifyConnector implements MusicPlayer {
 
     private final SpotifyApi spotifyApi;
 
@@ -26,7 +24,8 @@ public class SpotifyConnector {
         this.spotifyApi = spotifyApi;
     }
 
-    public List<Song> getRecentSongs() throws IOException, ParseException, SpotifyWebApiException {
+    @Override
+    public List<Song> getRecentSongs() throws Exception {
         PagingCursorbased<PlayHistory> playHistory = spotifyApi
                 .getCurrentUsersRecentlyPlayedTracks()
                 .build()

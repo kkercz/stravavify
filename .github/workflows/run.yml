@@ -18,9 +18,12 @@ jobs:
         run: ./gradlew build
       - name: Run the app
         env:
+          MUSIC_PLAYER: ${{ vars.MUSIC_PLAYER }}
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
           SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+          LAST_FM_USER: ${{ secrets.LAST_FM_USER }}
+          LAST_FM_API_KEY: ${{ secrets.LAST_FM_API_KEY }}
           STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
           STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
