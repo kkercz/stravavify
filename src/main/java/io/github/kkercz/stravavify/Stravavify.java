@@ -25,7 +25,6 @@ public class Stravavify {
 
     public void updateDescriptionWithSongs() throws Exception {
 
-        List<Song> recentSongs = musicPlayer.getRecentSongs();
         Optional<Activity> latestActivityWithEmptyDescription = stravaConnector
                 .getLatestActivity(Duration.ofHours(24))
                 .filter(a -> a.description() == null || a.description().isBlank());
@@ -34,6 +33,8 @@ public class Stravavify {
             System.out.println("No Strava activity with empty description in the last 24 hours found");
             return;
         }
+
+        List<Song> recentSongs = musicPlayer.getRecentSongs();
 
         Activity activity = latestActivityWithEmptyDescription.get();
         List<Song> activityPlaylist = recentSongs.stream()
